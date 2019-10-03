@@ -28,32 +28,12 @@ export default class Game {
     activePiece = {
         x:  0,
         y:  0,
-        get blocks() {
-            return this.rotations[this.rotationsIndex];
-        },
-        rotationsIndex: 0,
-        rotations: [
-            [
-                [0,1,0],
-                [1,1,1],
-                [0,0,0]
-            ],
-            [
-                [0,1,0],
-                [0,1,1],
-                [0,1,0]
-            ],
-            [
-                [0,0,0],
-                [1,1,1],
-                [0,1,0]
-            ],
-            [
-                [0,1,0],
-                [1,1,0],
-                [0,1,0]
-            ]
+        blocks: [
+            [0,1,0],
+            [1,1,1],
+            [0,0,0]
         ]
+
 
     };
 
@@ -79,11 +59,22 @@ export default class Game {
     }
 
     rotatePiece() {
-        this.activePiece.rotationsIndex = this.activePiece.rotationsIndex < 3 ? this.activePiece.rotationsIndex +1 :0;
-        if (this.hasCollision()) {
-            this.activePiece.rotationsIndex = this.activePiece.rotationsIndex > 0 ? this.activePiece.rotationsIndex -1 :3;
+        const blocks = this.activePiece.blocks;
+        const length = this.activePiece.blocks.length;
+        const temp = [];
+        for (let i = 0; i < length; i ++ ) {
+            temp[i] = new Array(length).fill(0); // инициализируем пустой массив
         }
-        return this.activePiece.blocks;
+
+        for (let y = 0; y < length; y++){
+            for (let x = 0; x < length; x++){
+                temp[x][y] = blocks[length - 1 - y][x]; //поворот массива в право
+            }
+        }
+        this.activePiece.blocks = temp;
+        if (this.hasCollision()){
+            this.activePiece.blocks = blocks;
+        }
     }
 
     hasCollision(){
