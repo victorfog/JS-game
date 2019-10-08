@@ -15,11 +15,11 @@ export default class View {
         this.element.appendChild(this.canvas);
 
     }
-    renderPlayfild(playfild){
-        for (let y = 0; y < playfild.length; y ++){
+    renderPlayfild({playfild}){  //теперь должно приходить состояние реструкторизация 8)
+        for (let y = 0; y < playfild.length; y++){
             const line = playfild[y];
 
-            for (let x = 0; line.length; x ++ ){
+            for (let x = 0;x < line.length; x++){
                 const block = line[x];
 
                 if (block){
@@ -33,6 +33,4 @@ export default class View {
             }
         }
     }
-
-
 }
