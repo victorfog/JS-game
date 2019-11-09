@@ -3,20 +3,13 @@ export default class Game {
     lines = 0;
     level = 0;
     playfield = this.createplayfield();
+    activePiece = this.createPiece();
+    nextPiece = this.createPiece();
 
-    activePiece = {
-        x:  0,
-        y:  0,
-        blocks: [
-            [0,1,0],
-            [1,1,1],
-            [0,0,0]
-        ]
-
-
-    };
     getState () {
         const playfield = this.createplayfield();
+        const {y: pieceY, x: pieceX, blocks} = this.activePiece;
+
 
         for (let y =0; y < this.playfield.length; y++){
             playfield[y] = [];
@@ -25,10 +18,10 @@ export default class Game {
                 playfield[y][x] = this.playfield[y][x];
             }
         }
-        for (let y =0; y < this.activePiece.blocks.length; y++){
-            for (let x =0; x< this.activePiece.blocks[y].length; x++){
-                if (this.activePiece.blocks[y][x]){
-                    playfield[this.activePiece.y +y][this.activePiece.x +x] = this.activePiece.blocks[y][x];
+        for (let y =0; y < blocks.length; y++){
+            for (let x =0; x< blocks[y].length; x++){
+                if (blocks[y][x]){
+                    playfield[pieceY + y][pieceX + x] = blocks[y][x];
                 }
             }
         }
@@ -49,6 +42,16 @@ export default class Game {
         }
         return playfield;
     }
+    createPiece() {
+       return  { x:  0,
+            y:  0,
+            blocks: [
+            [0,1,0],
+            [1,1,1],
+            [0,0,0]
+        ]
+       }
+}
 
     movePieceLeft() {
         this.activePiece.x -=1;
@@ -65,9 +68,11 @@ export default class Game {
     }
     movePieceDown() {
         this.activePiece.y +=1;
+
         if (this.hasCollision()){
             this.activePiece.y -=1;
             this.lockPiece();
+            this.updatePieces();
         }
     }
 
@@ -118,4 +123,9 @@ export default class Game {
             }
         }
     }
+    updatePieces() {
+        this.activePiece = this.nextPiece;
+        this.nextPiece = this.createPiece();
+    }
 }
+

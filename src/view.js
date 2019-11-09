@@ -15,22 +15,39 @@ export default class View {
         this.element.appendChild(this.canvas);
 
     }
-    renderPlayfild({playfild}){  //теперь должно приходить состояние реструкторизация 8)
-        for (let y = 0; y < playfild.length; y++){
-            const line = playfild[y];
+    render({playfield}){
+
+        this.clearScreen();
+        this.renderPlayfield(playfield);
+
+    }
+
+    clearScreen (){
+        this.context.clearRect(0,0, this.width, this.height); //очистка поля с координат 0,0, на всю ширину и высоту)
+    }
+
+    renderPlayfield(playfield){
+        for (let y = 0; y < playfield.length; y++){
+            const line = playfield[y];
 
             for (let x = 0;x < line.length; x++){
                 const block = line[x];
 
                 if (block){
-                    this.context.fillStyle = 'red';
-                    this.context.strokeStyle = 'black';
-                    this.context.lineWidth = 2;
-
-                    this.context.fillRect(x * this.blockWidth, y * this.blockHeight, this.blockWidth, this.blockHeight);
+                    this.rederBlock(x * this.blockWidth, y * this.blockHeight, this.blockWidth, this.blockHeight, 'red')
                 }
-
             }
         }
+    }
+    rederBlock(x,y, width, height, collor ){
+        this.context.fillStyle = collor;
+        this.context.strokeStyle = 'black';
+        this.context.lineWidth = 2;
+
+        this.context.fillRect(x,y, width, height);
+        this.context.strokeRect(x,y, width, height);
+
+
+
     }
 }
