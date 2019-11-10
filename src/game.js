@@ -58,44 +58,44 @@ export default class Game {
             case 'J':
                 piece.blocks = [
                     [0,0,0],
-                    [1,1,1],
-                    [0,0,1]
+                    [2,2,2],
+                    [0,0,2]
                 ];
                 break;
             case 'L':
                 piece.blocks = [
                     [0,0,0],
-                    [1,1,1],
-                    [1,0,0]
+                    [3,3,3],
+                    [3,0,0]
                 ];
                 break;
             case 'O':
                 piece.blocks = [
                     [0,0,0,0],
-                    [0,1,1,0],
-                    [0,1,1,0],
+                    [0,4,4,0],
+                    [0,4,4,0],
                     [0,0,0,0]
                 ];
                 break;
             case 'S':
                 piece.blocks = [
                     [0,0,0],
-                    [0,1,1],
-                    [1,1,0]
+                    [0,5,5],
+                    [5,5,0]
                 ];
                 break;
             case 'T':
                 piece.blocks = [
                     [0,0,0],
-                    [1,1,1],
-                    [0,1,0]
+                    [6,6,6],
+                    [0,6,0]
                 ];
                 break;
             case 'Z':
                 piece.blocks = [
                     [0,0,0],
-                    [1,1,0],
-                    [0,1,1]
+                    [7,7,0],
+                    [0,7,7]
                 ];
                 break;
             default:
@@ -129,19 +129,34 @@ export default class Game {
     }
 
     rotatePiece() {
+        this.rotateBlocks();
+
+        if (this.hasCollision()){
+            this.rotateBlocks(false);
+
+        }
+    }
+    rotateBlocks(clockwise = true){
         const blocks = this.activePiece.blocks;
-        const length = this.activePiece.blocks.length;
+        const length = blocks.length;
         const x = Math.floor(length/2);
         const y = length -1;
 
         for (let i =0; i < x; i++){
             for(let j = i; j < y -i; j++){
                 const temp = blocks[i][j];
+                if (clockwise) {
+                    blocks[i][j] = blocks[y - j][i];
+                    blocks[y - j][i] = blocks[y-i][y-j];
+                    blocks[y - i][y - j] = blocks[j][y - i];
+                    blocks[j][y - i] = temp;
+                } else {
+                    blocks[i][j] = blocks[j][y - i];
+                    blocks[j][y-i] = blocks[y - i][y - j];
+                    blocks[y - i][y - j] = blocks[y - j][i];
+                    blocks[y - j][i] = temp;
 
-                blocks[i][j] = blocks[y - j][i];
-                blocks[y - j][i] = blocks[y-i][y-j];
-                blocks[y - i][y - j] = blocks[j][y - i];
-                blocks[j][y - i] = temp;
+                }
             }
         }
     }

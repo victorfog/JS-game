@@ -1,4 +1,14 @@
 export default class View {
+    static colors = {
+        '1': 'cyan',
+        '2': 'blue',
+        '3': 'orange',
+        '4': 'yellow',
+        '5': 'green',
+        '6': 'purple',
+        '7': 'red'
+    };
+
     constructor (element, width, height, rows, collums) {
         this.element = element;
         this.width = width;
@@ -34,7 +44,7 @@ export default class View {
                 const block = line[x];
 
                 if (block){
-                    this.rederBlock(x * this.blockWidth, y * this.blockHeight, this.blockWidth, this.blockHeight, 'red')
+                    this.rederBlock(x * this.blockWidth, y * this.blockHeight, this.blockWidth, this.blockHeight, View.colors[block])
                 }
             }
         }
