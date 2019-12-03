@@ -1,10 +1,19 @@
 export default class Game {
+    static points = {
+        '1': 40,
+        '2': 100,
+        '3': 300,
+        '4': 1200
+    }
     score = 0;
     lines = 0;
-    level = 0;
     playfield = this.createplayfield();
     activePiece = this.createPiece();
     nextPiece = this.createPiece();
+
+    get level() {
+        return Math.floor(this.lines * 0.1);
+    }
 
     getState () {
         const playfield = this.createplayfield();
@@ -45,7 +54,7 @@ export default class Game {
     createPiece() {
         const index = Math.floor(Math.random() * 7);
         const type = 'IJLOSTZ'[index];
-        const piece = {x: 0, y: 0};
+        const piece = {};
         switch (type) {
             case 'I':
                 piece.blocks = [
@@ -101,7 +110,8 @@ export default class Game {
             default:
                 throw new Error('Неизвестный тип фигуры');
         }
-
+        piece.x = Math.floor((10 - piece.blocks[0].length)/2);
+        piece.y = -1;
        return piece;
 }
 
@@ -124,6 +134,8 @@ export default class Game {
         if (this.hasCollision()){
             this.activePiece.y -=1;
             this.lockPiece();
+            const clearedLines = this.clearLines();
+            this.updateScore(clearedLines);
             this.updatePieces();
         }
     }
@@ -190,6 +202,44 @@ export default class Game {
             }
         }
     }
+
+    clearLines() {
+        const rows = 20;
+        const collums = 10;
+        let lines = [];
+
+        for (let y = rows-1; y >= 0 ;y --){
+            let numberOfBlocks = 0;
+
+            for (let x = 0; x < collums; x++){
+                if (this.playfield[y][x]){
+                    numberOfBlocks ++;
+                }
+            }
+           if (numberOfBlocks === 0){
+               break;
+           } else if (numberOfBlocks < collums){
+               continue;
+           }else if (numberOfBlocks === collums){
+               lines.unshift(y);
+           }
+        }
+        for(let index of lines){
+            this.playfield.splice(index, 1);
+            this.playfield.unshift(new Array(collums).fill(0));
+        }
+        return lines.length;
+
+    }
+
+    updateScore(clearLines) {
+        if (clearLines > 0) {
+            this.score += Game.points[clearLines] * (this.level +1);
+            this.lines += clearLines;
+        }
+    }
+
+
     updatePieces() {
         this.activePiece = this.nextPiece;
         this.nextPiece = this.createPiece();
