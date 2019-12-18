@@ -218,7 +218,7 @@ export default class Game {
 
             for (let x = 0; x < collums; x++){
                 if (this.playfield[y][x]){
-                    numberOfBlocks ++;
+                    numberOfBlocks +=1;
                 }
             }
            if (numberOfBlocks === 0){
@@ -237,10 +237,12 @@ export default class Game {
 
     }
 
-    updateScore(clearLines) {
-        if (clearLines > 0) {
-            this.score += Game.points[clearLines] * (this.level +1);
-            this.lines += clearLines;
+    updateScore(clearedLines) {
+        console.log(this.level, 'befire');
+        if (clearedLines > 0) {
+            this.score += Game.points[clearedLines] * (this.level +1);
+            this.lines += clearedLines;
+            console.log(this.score, this.lines, this.level);
         }
     }
 
