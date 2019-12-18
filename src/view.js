@@ -54,6 +54,35 @@ export default class View {
         this.context.clearRect(0,0, this.width, this.height); //очистка поля с координат 0,0, на всю ширину и высоту)
     }
 
+    renderStartScreen() {
+        this.context.fillStyle = 'white';
+        this.context.font = '18px "Press start 2P';
+        this.context.textAlign = 'center';
+        this.context.textBaseline = 'middle';
+        this.context.fillText('Press ENTER to start', this.width / 2, this.height / 2);
+    }
+
+    renderPauseScreen() {
+        this.context.fillStyle = 'rgba(0.0.0.0.75)';
+        this.context.fillRect(0,0, this.width, this.height);
+
+        this.context.fillStyle = 'white';
+        this.context.font = '18px "Press start 2P';
+        this.context.textAlign = 'center';
+        this.context.textBaseline = 'middle';
+        this.context.fillText('Press ENTER to resume', this.width / 2, this.height / 2);
+    }
+    renderEndScreen({ score }) {
+        this.clearScreen();
+
+        this.context.fillStyle = 'white';
+        this.context.font = '18px "Press start 2P';
+        this.context.textAlign = 'center';
+        this.context.textBaseline = 'middle';
+        this.context.fillText('GAME OVER', this.width / 2, this.height / 2 - 48);
+        this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
+    }
+
     renderPlayfield({ playfield }){
         for (let y = 0; y < playfield.length; y++){
             const line = playfield[y];
@@ -77,7 +106,7 @@ export default class View {
 
     }
 
-    renderPanel({ level, score, lines, nextPiece}){
+    renderPanel({ level, score, lines, nextPiece }){
         this.context.textAlign = 'start';
         this.context.textBaseline = 'top';
         this.context.fillStyle = 'white';
