@@ -36,10 +36,15 @@ export default class Game {
         }
 
         return{
+            score: this.score,
+            level: this.level,
+            lines: this.lines,
+            nextPiece: this.nextPiece,
             playfield
         };
 
     }
+
     createplayfield() {
         const playfield = [];
         for (let y =0; y < 20; y++){

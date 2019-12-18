@@ -25,10 +25,11 @@ export default class View {
         this.element.appendChild(this.canvas);
 
     }
-    render({playfield}){
+    render(state){
 
         this.clearScreen();
-        this.renderPlayfield(playfield);
+        this.renderPlayfield(state);
+        this.renderPanel(state);
 
     }
 
@@ -36,7 +37,7 @@ export default class View {
         this.context.clearRect(0,0, this.width, this.height); //очистка поля с координат 0,0, на всю ширину и высоту)
     }
 
-    renderPlayfield(playfield){
+    renderPlayfield({ playfield }){
         for (let y = 0; y < playfield.length; y++){
             const line = playfield[y];
 
@@ -49,6 +50,18 @@ export default class View {
             }
         }
     }
+
+    renderPanel({level, score, lines, nexrPiece}){
+        this.context.textAlign = 'start';
+        this.context.textBaseline = 'top';
+        this.context.fillStyle = 'white';
+        this.context.font = '14px "Press start 2P"';
+
+        this.context.fillText('Level $(level)', 0,0);
+    }
+
+
+
     rederBlock(x,y, width, height, collor ){
         this.context.fillStyle = collor;
         this.context.strokeStyle = 'black';
